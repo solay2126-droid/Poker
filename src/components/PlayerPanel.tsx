@@ -12,7 +12,7 @@ export default function PlayerPanel({ playerName, setPlayerName }: Props) {
       <Typography variant="h6">Nickname</Typography>
       <TextField
         fullWidth
-        placeholder="Scegli un nickname"
+        placeholder="Choose your nickname"
         value={playerName}
         onChange={(e) => setPlayerName(e.target.value)}
         sx={{ mt: 1 }}
