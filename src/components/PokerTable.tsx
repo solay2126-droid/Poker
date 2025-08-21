@@ -1,4 +1,4 @@
-  import React, { useState } from "react";
+import React, { useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { Button, TextField, Box, Typography, Paper } from "@mui/material";
 import { Connection, PublicKey, Transaction, SystemProgram } from "@solana/web3.js";
@@ -16,7 +16,7 @@ export default function PokerTable() {
 
   const handleBet = async () => {
     if (!publicKey || !connected || bet <= 0) {
-      setResult("Collega il wallet e inserisci una puntata valida");
+      setResult("Connect your wallet and enter a valid bet amount.");
       return;
     }
 
@@ -31,19 +31,19 @@ export default function PokerTable() {
 
     try {
       const signature = await sendTransaction(transaction, connection);
-      setResult(`Transazione inviata! Signature: ${signature}`);
+      setResult(`Transaction sent! Signature: ${signature}`);
 
-      // Demo: determina vincitore casuale
+      // Simulate random winner for demo
       const isWinner = Math.random() > 0.6;
       if (isWinner) {
-        setLastWinner(playerName || publicKey?.toBase58() || "Tu");
-        setResult(`Hai VINTO! (simulazione, payout manuale)`);
+        setLastWinner(playerName || publicKey?.toBase58() || "You");
+        setResult(`You WON! (demo, payout is manual)`);
       } else {
         setLastWinner(null);
-        setResult(`Hai perso questa mano! Ritenta!`);
+        setResult(`You lost this hand. Try again!`);
       }
     } catch (e: any) {
-      setResult(`Errore transazione: ${e.message || e}`);
+      setResult(`Transaction error: ${e.message || e}`);
     }
   };
 
@@ -51,18 +51,18 @@ export default function PokerTable() {
     <Paper sx={{ p: 3, mt: 4 }}>
       <Box display="flex" alignItems="center" gap={2}>
         <CasinoIcon fontSize="large" color="primary" />
-        <Typography variant="h5">Tavolo Poker</Typography>
+        <Typography variant="h5">Poker Table</Typography>
       </Box>
       <TextField
         label="Nickname"
         fullWidth
-        placeholder="Scegli un nickname"
+        placeholder="Choose your nickname"
         value={playerName}
         onChange={(e) => setPlayerName(e.target.value)}
         sx={{ mt: 2 }}
       />
       <TextField
-        label="Puntata (SOL)"
+        label="Bet (SOL)"
         type="number"
         fullWidth
         value={bet}
@@ -76,7 +76,7 @@ export default function PokerTable() {
         sx={{ mt: 2 }}
         disabled={!connected || bet <= 0}
       >
-        Punta e Gioca
+        Bet & Play
       </Button>
       {result && (
         <Typography sx={{ mt: 2 }} color={lastWinner ? "success.main" : "error"}>
@@ -85,14 +85,14 @@ export default function PokerTable() {
       )}
       {lastWinner && (
         <Typography sx={{ mt: 2 }} color="success.main">
-          Vincitore: {lastWinner}
+          Winner: {lastWinner}
         </Typography>
       )}
       <Typography sx={{ mt: 3, fontSize: 12, color: "text.secondary" }}>
-        Fee e perdite inviate al wallet del casino.<br />
-        Vincite simulate: il payout automatico è possibile con smart contract Solana.<br />
-        Demo su <b>devnet</b>.
+        Fees and losses are sent to the casino wallet.<br />
+        Winnings are simulated; automatic payouts require a Solana smart contract.<br />
+        Demo runs on <b>devnet</b>.
       </Typography>
     </Paper>
   );
-}      
+}
